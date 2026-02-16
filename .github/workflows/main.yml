@@ -13,4 +13,4 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: www/crm.kpvk.edu.kz
+          server-dir: www/crm.kpvk.edu.kz/
