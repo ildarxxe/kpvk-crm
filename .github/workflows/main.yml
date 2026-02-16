@@ -13,4 +13,4 @@ jobs:
 
       - name: Send to Server
         run: |
-          curl -X POST -F "${{ secrets.DEPLOY_PASSWORD }}" -F "file=@deploy.zip" https://crm.kpvk.edu.kz/deploy_secret_92384.php
+          curl -X POST -F "password=${{ secrets.DEPLOY_PASSWORD }}" -F "file=@deploy.zip" https://crm.kpvk.edu.kz/deploy_secret_92384.php
