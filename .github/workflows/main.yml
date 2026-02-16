@@ -11,6 +11,6 @@ jobs:
       - name: Create Deployment Archive
         run: zip -r deploy.zip . -x ".git*"
 
-      - name: Send to Server
+      - name: Send-to-Server
         run: |
           curl -X POST -F "password=${{ secrets.DEPLOY_PASSWORD }}" -F "file=@deploy.zip" https://crm.kpvk.edu.kz/deploy_secret_92384.php
