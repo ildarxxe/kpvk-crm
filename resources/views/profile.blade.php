@@ -3,8 +3,13 @@
 @section('content')
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="mb-8">
-            <h1 class="text-3xl font-black text-gray-900 tracking-tight">Мой профиль</h1>
-            <p class="text-gray-500 mt-1">Управление личными данными и настройками аккаунта</p>
+            @if(auth()->id() === $user->id)
+                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Мой профиль</h1>
+                <p class="text-gray-500 mt-1">Управление личными данными и настройками аккаунта</p>
+            @else
+                <h1 class="text-3xl font-black text-gray-900 tracking-tight">Профиль пользователя</h1>
+                <p class="text-gray-500 mt-1">Информация о сотруднике КПВК</p>
+            @endif
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -50,13 +55,22 @@
                 <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                     <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
                         <h3 class="text-lg font-bold text-gray-900">Персональные данные</h3>
-                        <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        @if(auth()->user()->id === $user->id)
+                            <button onclick="openEditModal()" class="text-xs font-black text-indigo-600 uppercase tracking-widest hover:text-indigo-800 transition-colors">Редактировать</button>
+                        @else
+                            <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                        @endif
                     </div>
 
                     <div class="p-8 grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
                             <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">ФИО</label>
                             <p class="text-gray-900 font-semibold text-lg">{{ $user->name }}</p>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">E-mail</label>
+                            <p class="text-gray-900 font-semibold text-lg">{{ $user->email }}</p>
                         </div>
 
                         <div>
@@ -83,6 +97,70 @@
                 </div>
 
                 @if(auth()->user()->id === $user->id)
+                    <div id="editProfileModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+                        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                            <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" onclick="closeEditModal()"></div>
+                            <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+                            <div class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
+                                <form action="{{ route('profile.update') }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="bg-gray-50 px-8 py-6 border-b border-gray-100 flex justify-between items-center">
+                                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Редактировать профиль</h3>
+                                        <button type="button" onclick="closeEditModal()" class="text-gray-400 hover:text-gray-600 transition-colors">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+                                        </button>
+                                    </div>
+
+                                    <div class="p-8 space-y-5">
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">ФИО</label>
+                                            <input type="text" name="name" value="{{ $user->name }}" required
+                                                   class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                                                   placeholder="Иванов Иван Иванович">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Номер телефона</label>
+                                            <input type="text" name="phone" value="{{ $user->phone }}" required
+                                                   class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                                                   placeholder="+7 777 000 00 00">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-500 uppercase mb-2 ml-1">Номер кабинета</label>
+                                            <input type="number" name="cabinet_number" value="{{ $user->cabinet_number }}"
+                                                   class="w-full bg-gray-50 border-gray-200 rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all outline-none"
+                                                   placeholder="301">
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 ml-1 opacity-50">E-mail (недоступно для редактирования)</label>
+                                            <input type="text" value="{{ $user->email }}" disabled
+                                                   class="w-full bg-gray-100 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-400 cursor-not-allowed outline-none">
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-gray-50 px-8 py-6 flex flex-col sm:flex-row justify-end gap-3 border-t border-gray-100">
+                                        <button type="button" onclick="closeEditModal()" class="px-6 py-3 text-sm font-bold text-gray-600 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-all">Отмена</button>
+                                        <button type="submit" class="px-8 py-3 text-sm font-bold text-white bg-indigo-600 rounded-xl hover:bg-indigo-700 shadow-lg shadow-indigo-100 transition-all active:scale-95">Сохранить</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        function openEditModal() {
+                            document.getElementById('editProfileModal').classList.remove('hidden');
+                            document.body.style.overflow = 'hidden';
+                        }
+                        function closeEditModal() {
+                            document.getElementById('editProfileModal').classList.add('hidden');
+                            document.body.style.overflow = 'auto';
+                        }
+                    </script>
+
                     <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden">
                         <div class="px-8 py-6 border-b border-gray-50 flex items-center justify-between">
                             <h3 class="text-lg font-bold text-gray-900">Безопасность</h3>

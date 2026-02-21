@@ -23,6 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/export/generate', [TaskController::class, 'generate'])->name('generate');
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::put('/change-password', [ProfileController::class, 'changePassword'])->name('changePassword');
+    Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
+
     
     Route::get('/complete-profile', [ProfileController::class, 'viewCompleteProfile'])->name('complete-profile');
     Route::post('/complete-profile', [ProfileController::class, 'completeProfile'])->name('profile.complete.store');

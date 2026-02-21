@@ -77,14 +77,14 @@
                         </div>
                     </div>
 
-                    @if($task->executor)
+                    @if($task->admin)
                         <div class="bg-white p-5 rounded-2xl border border-gray-100 flex items-center shadow-sm">
                             <div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-xl flex items-center justify-center font-black text-lg mr-4">
-                                {{ mb_strtoupper(mb_substr($task->executor->name, 0, 1)) }}
+                                {{ mb_strtoupper(mb_substr($task->admin->name, 0, 1)) }}
                             </div>
                             <div>
                                 <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Исполнитель</p>
-                                <p class="text-sm font-black text-gray-900">{{ $task->executor->name }}</p>
+                                <p class="text-sm font-black text-gray-900">{{ $task->admin->name }}</p>
                             </div>
                         </div>
                     @else
@@ -93,7 +93,7 @@
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                             </div>
                             <div>
-                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Статус</p>
+                                <p class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Исполнитель</p>
                                 <p class="text-sm font-bold text-gray-400 italic">Специалист не назначен</p>
                             </div>
                         </div>
@@ -136,32 +136,32 @@
                     @if($task->status === 'completed')
                         @if(!$task->review)
                             @if(auth()->id() === $task->teacher_id)
-                                <div class="bg-indigo-50/50 rounded-[2rem] border border-indigo-100 p-8 sm:p-10">
+                                <div class="bg-indigo-50/50 rounded-[2rem] border border-indigo-100 p-6 sm:p-10">
                                     <div class="flex items-center space-x-3 mb-6">
-                                        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-100">
+                                        <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-100 flex-shrink-0">
                                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                                         </div>
                                         <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight">Оцените работу</h3>
                                     </div>
-
+ 
                                     <form action="/tasks/{{$task->id}}/rate" method="POST" class="space-y-6">
                                         @csrf
-                                        <div class="flex items-center space-x-2" x-data="{ hover: 0, rating: 0 }">
+                                        <div class="flex items-center justify-center sm:justify-start space-x-1 sm:space-x-2" x-data="{ hover: 0, rating: 0 }">
                                             @foreach(range(1, 5) as $i)
                                                 <label class="cursor-pointer transition-transform hover:scale-110 active:scale-90">
                                                     <input type="radio" name="rate" value="{{ $i }}" class="hidden" required onclick="updateStars({{ $i }})">
-                                                    <svg id="star-{{ $i }}" class="w-10 h-10 text-gray-200 fill-current transition-colors" viewBox="0 0 20 20">
+                                                    <svg id="star-{{ $i }}" class="w-10 h-10 sm:w-12 sm:h-12 text-gray-200 fill-current transition-colors" viewBox="0 0 20 20">
                                                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                                                     </svg>
                                                 </label>
                                             @endforeach
                                         </div>
                                         <div>
-                            <textarea required name="comment" rows="3" placeholder="Ваш отзыв о выполнении..."
-                                      class="w-full bg-white border-2 border-indigo-100 rounded-2xl px-5 py-4 font-medium text-gray-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all outline-none resize-none"></textarea>
+                                            <textarea required name="comment" rows="3" placeholder="Ваш отзыв о выполнении..."
+                                                      class="w-full bg-white border-2 border-indigo-100 rounded-2xl px-4 py-3 sm:px-5 sm:py-4 font-medium text-gray-700 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 transition-all outline-none resize-none text-sm sm:text-base"></textarea>
                                         </div>
-
-                                        <button type="submit" class="w-full sm:w-auto bg-indigo-600 text-white px-10 py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all">
+ 
+                                        <button type="submit" class="w-full sm:w-auto bg-indigo-600 text-white px-8 py-4 sm:px-10 sm:py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all">
                                             Отправить отзыв
                                         </button>
                                     </form>

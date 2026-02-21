@@ -54,12 +54,23 @@ class ProfileController extends Controller
             'cabinet_number' => 'nullable|integer',
         ]);
 
-        $user->update([
-            'name' => $validated['name'],
-            'phone' => $validated['phone'],
-            'cabinet_number' => $validated['cabinet_number'],
-        ]);
+        $user->update($validated);
 
         return redirect()->route('profile')->with('success', 'Профиль успешно обновлен');
+    }
+
+    public function updateProfile(Request $request): RedirectResponse
+    {
+        $user = auth()->user();
+        
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'phone' => 'required|string|unique:users,phone,' . $user->id,
+            'cabinet_number' => 'nullable|integer',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->back()->with('success', 'Данные профиля обновлены');
     }
 }
