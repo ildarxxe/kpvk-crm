@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-2xl mx-auto py-10 px-4">
+    <div class="max-w-2xl mx-auto py-10 px-3 sm:px-4">
         <div class="mb-8">
             <h1 class="text-2xl font-bold text-gray-900">Экспорт данных</h1>
             <p class="text-sm text-gray-400 mt-1">Выгрузка отчётов в формате Excel</p>

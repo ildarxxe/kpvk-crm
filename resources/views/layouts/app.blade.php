@@ -98,7 +98,7 @@
     @endif
 </div>
 
-<main class="flex-grow px-4 sm:px-6 lg:px-8">
+<main class="flex-grow px-3 sm:px-6 lg:px-8">
     @yield('content')
 </main>
 

@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-10">
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between mb-10 gap-3">
             <div>
                 <h1 class="text-2xl font-bold text-gray-900">Рабочий стол</h1>
@@ -227,7 +227,7 @@
     </div>
 
     <div id="globalApproveModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 sm:block sm:p-0">
+        <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div class="fixed inset-0 bg-gray-900/50 transition-opacity" onclick="closeApproveModal()"></div>
             <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
             <div class="inline-block align-bottom bg-white rounded-xl text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">

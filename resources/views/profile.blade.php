@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+    <div class="max-w-5xl mx-auto px-3 sm:px-6 lg:px-8 py-10">
         <div class="mb-8">
             @if(auth()->id() === $user->id)
                 <h1 class="text-2xl font-bold text-gray-900">Мой профиль</h1>
