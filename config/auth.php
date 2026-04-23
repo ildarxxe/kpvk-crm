@@ -4,6 +4,8 @@ use App\Models\User;
 
 return [
 
+    'mode' => env('APP_MODE', 'production'),
+
     /*
     |--------------------------------------------------------------------------
     | Authentication Defaults
@@ -63,17 +65,24 @@ return [
 
     'providers' => [
         'users' => [
-            'driver' => 'ldap',
-            'model' => LdapRecord\Models\ActiveDirectory\User::class,
-            'rules' => [],
-            'database' => [
-                'model' => App\Models\User::class,
-            ],
-            'sync_attributes' => [
-                'name' => 'cn',
-                'email' => 'userprincipalname',
-                'guid' => 'objectguid',
-            ],
+            ...((env('APP_MODE', 'production') === 'dev')
+                ? [
+                    'driver' => 'eloquent',
+                    'model' => App\Models\User::class,
+                ]
+                : [
+                    'driver' => 'ldap',
+                    'model' => LdapRecord\Models\ActiveDirectory\User::class,
+                    'rules' => [],
+                    'database' => [
+                        'model' => App\Models\User::class,
+                    ],
+                    'sync_attributes' => [
+                        'name' => 'cn',
+                        'email' => 'userprincipalname',
+                        'guid' => 'objectguid',
+                    ],
+                ]),
         ],
     ],
 

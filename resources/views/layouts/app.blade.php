@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRM КПВК</title>
-    <link rel="icon" href="https://kpvk.edu.kz/wp-content/uploads/2021/06/cropped-Aktualnye_Logotip-32x32.jpg" sizes="32x32">
-    <link rel="icon" href="https://kpvk.edu.kz/wp-content/uploads/2021/06/cropped-Aktualnye_Logotip-192x192.jpg" sizes="192x192">
-    <link rel="apple-touch-icon" href="https://kpvk.edu.kz/wp-content/uploads/2021/06/cropped-Aktualnye_Logotip-180x180.jpg">
-    <meta name="msapplication-TileImage" content="https://kpvk.edu.kz/wp-content/uploads/2021/06/cropped-Aktualnye_Logotip-270x270.jpg">
+    <title>ChainCRM</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes slideIn {
@@ -21,34 +17,30 @@
 
 <nav class="bg-white border-b border-gray-200 sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-14">
             <div class="flex items-center">
-                <a href="/" class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200">
-                        <span class="text-white font-black text-sm">C</span>
-                    </div>
-                    <span class="text-xl font-black tracking-tight text-gray-900 uppercase">CRM <span class="text-indigo-600">КПВК</span></span>
+                <a href="/" class="flex items-center">
+                    <span class="text-base font-bold tracking-tight text-gray-900">Chain<span class="text-indigo-600">CRM</span></span>
                 </a>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:space-x-8">
+            <div class="hidden sm:flex sm:items-center sm:gap-6">
                 @auth
-                    <a href="/" class="text-sm font-bold text-gray-500 hover:text-indigo-600 transition-colors">Рабочий стол</a>
+                    <a href="/" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Рабочий стол</a>
                     @if(auth()->user()->role->role === 'deputy')
-                        <a href="/export" class="text-sm font-bold text-indigo-600 hover:text-indigo-800 transition-colors">Экспорт</a>
+                        <a href="/export" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors">Экспорт</a>
                     @endif
-
-                    <a href="{{ route('profile') }}" class="text-sm font-bold text-gray-500 hover:text-indigo-600 transition-colors">Профиль</a>
+                    <a href="{{ route('profile') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Профиль</a>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
-                        <button type="submit" class="text-sm font-bold text-rose-500 hover:text-rose-700 transition-colors">Выход</button>
+                        <button type="submit" class="text-sm text-rose-500 hover:text-rose-700 transition-colors">Выход</button>
                     </form>
                 @endauth
             </div>
 
             <div class="flex items-center sm:hidden">
-                <button id="mobile-menu-button" class="p-2 rounded-xl text-gray-400 hover:bg-gray-100 focus:outline-none transition-colors">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button id="mobile-menu-button" class="p-2 rounded-lg text-gray-400 hover:bg-gray-100 transition-colors focus:outline-none">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path id="menu-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         <path id="close-icon" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
@@ -57,20 +49,20 @@
         </div>
     </div>
 
-    <div id="mobile-menu" class="hidden sm:hidden bg-white border-b border-gray-100 animate-slide-in">
-        <div class="px-4 pt-2 pb-6 space-y-1">
+    <div id="mobile-menu" class="hidden sm:hidden bg-white border-b border-gray-100">
+        <div class="px-4 pt-2 pb-5 space-y-0.5">
             @auth
-                <a href="/" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Рабочий стол</a>
+                <a href="/" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Рабочий стол</a>
 
                 @if(auth()->user()->role->role === 'deputy')
-                    <a href="/export" class="block px-4 py-3 rounded-xl text-base font-bold text-indigo-600 hover:bg-indigo-50 transition-all">Экспорт отчетов</a>
+                    <a href="/export" class="block px-3 py-2.5 rounded-lg text-sm text-indigo-600 hover:bg-indigo-50 transition-colors">Экспорт отчётов</a>
                 @endif
 
-                <a href="{{ route('profile') }}" class="block px-4 py-3 rounded-xl text-base font-bold text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-all">Профиль</a>
-                <div class="pt-4 mt-4 border-t border-gray-100">
+                <a href="{{ route('profile') }}" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Профиль</a>
+                <div class="pt-3 mt-2 border-t border-gray-100">
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="w-full text-left px-4 py-3 rounded-xl text-base font-black text-rose-500 hover:bg-rose-50 transition-all uppercase tracking-wider">Выйти из системы</button>
+                        <button type="submit" class="w-full text-left px-3 py-2.5 rounded-lg text-sm text-rose-500 hover:bg-rose-50 transition-colors">Выйти из системы</button>
                     </form>
                 </div>
             @endauth
@@ -78,28 +70,28 @@
     </div>
 </nav>
 
-<div id="notification-container" class="fixed top-20 right-4 z-50 flex flex-col space-y-3 w-full max-w-sm px-4 sm:px-0">
+<div id="notification-container" class="fixed top-16 right-4 z-50 flex flex-col gap-2 w-full max-w-sm px-4 sm:px-0">
     @if(session('success'))
-        <div class="notification-item animate-slide-in bg-white border-l-4 border-emerald-500 shadow-xl rounded-xl p-4 flex items-start">
-            <div class="flex-shrink-0 text-emerald-500">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+        <div class="notification-item animate-slide-in bg-white border-l-4 border-emerald-500 shadow-md rounded-lg p-4 flex items-start gap-3">
+            <div class="shrink-0 text-emerald-500 mt-0.5">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             </div>
-            <div class="ml-3 pr-8">
-                <p class="text-sm font-bold text-gray-900">Успешно</p>
-                <p class="text-xs text-gray-500 mt-1">{{ session('success') }}</p>
+            <div>
+                <p class="text-sm font-semibold text-gray-900">Успешно</p>
+                <p class="text-xs text-gray-500 mt-0.5">{{ session('success') }}</p>
             </div>
         </div>
     @endif
 
     @if($errors->any())
         @foreach($errors->all() as $error)
-            <div class="notification-item animate-slide-in bg-white border-l-4 border-rose-500 shadow-xl rounded-xl p-4 flex items-start">
-                <div class="flex-shrink-0 text-rose-500">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            <div class="notification-item animate-slide-in bg-white border-l-4 border-rose-500 shadow-md rounded-lg p-4 flex items-start gap-3">
+                <div class="shrink-0 text-rose-500 mt-0.5">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                 </div>
-                <div class="ml-3 pr-8">
-                    <p class="text-sm font-bold text-gray-900">Ошибка</p>
-                    <p class="text-xs text-gray-500 mt-1">{{ $error }}</p>
+                <div>
+                    <p class="text-sm font-semibold text-gray-900">Ошибка</p>
+                    <p class="text-xs text-gray-500 mt-0.5">{{ $error }}</p>
                 </div>
             </div>
         @endforeach
@@ -110,9 +102,9 @@
     @yield('content')
 </main>
 
-<footer class="bg-white border-t border-gray-100 py-6">
+<footer class="bg-white border-t border-gray-100 py-5">
     <div class="max-w-7xl mx-auto px-4 text-center">
-        <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">&copy; {{ date('Y') }} CRM КПВК. Все права защищены.</p>
+        <p class="text-xs text-gray-400">&copy; {{ date('Y') }} ChainCRM. Все права защищены.</p>
     </div>
 </footer>
 

@@ -21,8 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->use([
-            CheckProfileMiddleware::class,
-            \App\Http\Middleware\SsoMiddleware::class,
+            ...(env('APP_MODE', 'production') === 'dev' ? [] : [\App\Http\Middleware\SsoMiddleware::class]),
         ]);
         $middleware->trustProxies(at: '*');
     })

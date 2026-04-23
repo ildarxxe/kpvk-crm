@@ -5,17 +5,15 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
+use App\Http\Middleware\CheckProfileMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, "showLogin"])->name('login');
-    //Route::get('/register', [AuthController::class, "showRegister"]);
-
     Route::post('/login', [AuthController::class, 'login'])->name('loginPost');
-    //Route::post('/register', [AuthController::class, 'register'])->name("register");
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', CheckProfileMiddleware::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/export', [TaskController::class, 'viewExport']);
     Route::get('/profile/{user_id}', [ProfileController::class, 'viewUserProfile']);
@@ -25,7 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::put('/change-password', [ProfileController::class, 'changePassword'])->name('changePassword');
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
-    
+
     Route::get('/complete-profile', [ProfileController::class, 'viewCompleteProfile'])->name('complete-profile');
     Route::post('/complete-profile', [ProfileController::class, 'completeProfile'])->name('profile.complete.store');
 
@@ -40,6 +38,5 @@ Route::middleware('auth')->group(function () {
         Route::post('/{task}/rate', [ReviewController::class, 'rate']);
 
         Route::get('/{id}', [TaskController::class, 'showTaskDetails']);
-
     });
 });
