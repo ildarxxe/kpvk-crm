@@ -217,6 +217,11 @@
 
                         <div class="flex gap-2">
                             <a href="/tasks/{{$task->id}}" class="flex-1 bg-gray-100 text-center py-2 rounded-lg text-xs font-medium text-gray-600 hover:bg-gray-200 transition-colors">Детали</a>
+                            @if($userRole === "teacher" && $task->teacher_id === auth()->user()->id && $task->status === "pending")
+                                <button onclick="openConfirmationModal({{ $task->id }}, '{{ addslashes($task->title) }}')"  class="p-1.5 text-xs text-gray-400 text-red-600 bg-red-50 rounded-lg transition-colors">
+                                     Удалить
+                                </button>
+                            @endif
                             @if($userRole === 'deputy' && $task->status === 'pending')
                                 <button onclick="openApproveModal('{{ $task->id }}', '{{ addslashes($task->title) }}')" class="flex-1 bg-emerald-500 text-white py-2 rounded-lg text-xs font-semibold hover:bg-emerald-600 transition-colors">Одобрить</button>
                             @endif
