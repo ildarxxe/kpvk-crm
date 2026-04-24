@@ -100,7 +100,7 @@ class TaskController extends Controller
     }
 
     public function delete(Task $task): RedirectResponse {
-        $canDelete = auth()->user()->id === $task->teacher_id;
+        $canDelete = auth()->user()->id === $task->teacher_id && $task->status === "pending";
         if (!$canDelete) {
             return redirect()->back()->withErrors(["error" => "Вы не можете удалить эту заявку"]);
         }
