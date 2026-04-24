@@ -1,8 +1,10 @@
 <?php
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SupportController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\TaskStatusController;
 use App\Http\Middleware\CheckProfileMiddleware;
@@ -12,6 +14,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, "showLogin"])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('loginPost');
 });
+
+Route::get("/respond/{token}", [SupportController::class, "viewRespond"])->name('respond');
 
 Route::middleware(['auth', CheckProfileMiddleware::class])->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -23,6 +27,12 @@ Route::middleware(['auth', CheckProfileMiddleware::class])->group(function () {
     Route::put('/change-password', [ProfileController::class, 'changePassword'])->name('changePassword');
     Route::put('/profile/update', [ProfileController::class, 'updateProfile'])->name('profile.update');
 
+    Route::get("/support", [SupportController::class, "viewSupport"])->name('support');
+    Route::post("/support", [SupportController::class, "support"])->name('support.send');
+
+    Route::get("/notifications", [NotificationController::class, "viewNotifications"])->name('notifications');
+    Route::post("/notifications/mark-as-read", [NotificationController::class, "markAllAsRead"])->name('notifications.markAsRead');
+    Route::post("/notifications/{support}", [NotificationController::class, "respond"])->name('notifications.respond');
 
     Route::get('/complete-profile', [ProfileController::class, 'viewCompleteProfile'])->name('complete-profile');
     Route::post('/complete-profile', [ProfileController::class, 'completeProfile'])->name('profile.complete.store');

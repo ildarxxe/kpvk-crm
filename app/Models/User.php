@@ -29,21 +29,21 @@ class User extends Authenticatable implements LdapAuthenticatable
     protected $hidden = [
         'password',
     ];
-    
+
     protected static function booted()
     {
         static::saving(function ($user) { // Используем saving вместо creating
             if (empty($user->role_id)) {
-                $user->role_id = 1; 
+                $user->role_id = 1;
             }
-    
+
             if (empty($user->email)) {
                 $login = $user->name ?: 'user_' . $user->guid;
                 $user->email = strtolower($login) . '@kpvk.loc';
             }
         });
     }
-    
+
     public function role(): BelongsTo {
         return $this->belongsTo(UserRole::class);
     }
@@ -73,8 +73,12 @@ class User extends Authenticatable implements LdapAuthenticatable
         return $this->role_id === 1;
     }
 
-    public function isDeputy()
+    public function isDeputy(): bool
     {
         return $this->role_id === 2;
+    }
+
+    public function notifications(): HasMany {
+        return $this->hasMany(Notification::class);
     }
 }

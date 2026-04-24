@@ -178,7 +178,6 @@
                             <div>
                                 <h3 class="text-sm font-semibold text-gray-900">{{ $task->title }}</h3>
                                 <div class="flex items-center gap-2 mt-1">
-                                    <span class="text-xs text-gray-400">#{{ $task->id }}</span>
                                     @if($task->priority)
                                         <span class="text-xs
                                             @if($task->priority_id == 3) text-rose-500 @elseif($task->priority_id == 2) text-amber-500 @else text-emerald-500 @endif">

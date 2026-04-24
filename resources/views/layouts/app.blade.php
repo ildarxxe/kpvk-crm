@@ -26,10 +26,18 @@
 
             <div class="hidden sm:flex sm:items-center sm:gap-6">
                 @auth
+                    @php $unread = auth()->user()->notifications()->whereNull('read_at')->count(); @endphp
                     <a href="/" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Рабочий стол</a>
                     @if(auth()->user()->role->role === 'deputy')
                         <a href="/export" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors">Экспорт</a>
                     @endif
+                    <a href="{{ route('notifications') }}" class="relative text-sm text-gray-500 hover:text-gray-900 transition-colors">
+                        Уведомления
+                        @if($unread > 0)
+                            <span class="absolute -top-1.5 -right-4 min-w-[16px] h-4 px-1 bg-indigo-600 text-white text-[10px] font-semibold rounded-full flex items-center justify-center">{{ $unread }}</span>
+                        @endif
+                    </a>
+                    <a href="{{ route('support') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Поддержка</a>
                     <a href="{{ route('profile') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Профиль</a>
                     <form action="{{ route('logout') }}" method="POST" class="inline">
                         @csrf
@@ -58,6 +66,13 @@
                     <a href="/export" class="block px-3 py-2.5 rounded-lg text-sm text-indigo-600 hover:bg-indigo-50 transition-colors">Экспорт отчётов</a>
                 @endif
 
+                <a href="{{ route('notifications') }}" class="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">
+                    <span>Уведомления</span>
+                    @if($unread > 0)
+                        <span class="min-w-[18px] h-[18px] px-1 bg-indigo-600 text-white text-[10px] font-semibold rounded-full flex items-center justify-center">{{ $unread }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('support') }}" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Поддержка</a>
                 <a href="{{ route('profile') }}" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Профиль</a>
                 <div class="pt-3 mt-2 border-t border-gray-100">
                     <form action="{{ route('logout') }}" method="POST">
