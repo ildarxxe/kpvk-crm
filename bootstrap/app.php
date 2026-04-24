@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\CheckProfileMiddleware;
+use App\Http\Middleware\RequestLoggerMiddleware;
+use App\Http\Middleware\SsoMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -8,8 +10,6 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,7 +21,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->statefulApi();
         $middleware->use([
-            ...(env('APP_MODE', 'production') === 'dev' ? [] : [\App\Http\Middleware\SsoMiddleware::class]),
+            RequestLoggerMiddleware::class,
+            ...(env('APP_MODE', 'production') === 'dev' ? [] : [SsoMiddleware::class]),
         ]);
         $middleware->trustProxies(at: '*');
     })
