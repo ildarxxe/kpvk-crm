@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Actions\Task\CreateTaskAction;
 use App\Exports\TasksExport;
 use App\Models\Task;
+use App\Models\TaskPriority;
+use App\Models\User;
 use App\Services\TaskService;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 use Rap2hpoutre\FastExcel\FastExcel;
 
@@ -64,18 +67,18 @@ class TaskController extends Controller
     public function showTaskDetails(int $id): \Illuminate\Contracts\View\Factory|View|RedirectResponse
     {
         $task = $this->service->find($id);
-        
+
         $user = auth()->user();
-        $canView = $user->isDeputy() 
-            || $user->id === $task->teacher_id 
+        $canView = $user->isDeputy()
+            || $user->id === $task->teacher_id
             || $user->id === $task->admin_id;
 
         if (!$canView) {
             return redirect()->back()->withErrors(['error' => 'У вас нет прав для просмотра этой задачи']);
         }
 
-        $admins = \App\Models\User::query()->where('role_id', 3)->get();
-        $priorities = \App\Models\TaskPriority::all();
+        $admins = User::query()->where('role_id', 3)->get();
+        $priorities = TaskPriority::all();
 
         return view('tasks.details', compact('task', 'admins', 'priorities'));
     }
@@ -94,5 +97,20 @@ class TaskController extends Controller
         $action->execute($data);
 
         return redirect()->route('dashboard')->with('success', 'Заявка создана!');
+    }
+
+    public function delete(Task $task): RedirectResponse {
+        $canDelete = auth()->user()->id === $task->teacher_id;
+        if (!$canDelete) {
+            return redirect()->back()->withErrors(["error" => "Вы не можете удалить эту заявку"]);
+        }
+
+        foreach ($task->files as $file) {
+            Storage::disk("public")->delete($file->file_path);
+        }
+        Storage::disk("public")->deleteDirectory("tasks/".$task->id);
+        $task->files()->delete();
+        $task->delete();
+        return redirect()->back()->with("success", "Заявка удалена!");
     }
 }

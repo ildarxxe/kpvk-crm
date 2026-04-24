@@ -167,7 +167,8 @@
                         </div>
 
                         <div class="p-6">
-                            <form action="{{route("changePassword")}}" method="POST" class="space-y-4 max-w-sm">
+                            {{-- action="{{route("changePassword")}}" --}}
+                            <form method="POST" class="space-y-4 max-w-sm">
                                 @csrf
                                 @method('PUT')
 
@@ -185,9 +186,11 @@
                                            placeholder="••••••••">
                                 </div>
 
-                                <button type="submit" class="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-lg hover:bg-black transition-colors">
+                                {{-- пока type button, чтобы заработало type submit --}}
+                                <button type="button" disabled class="px-5 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-lg hover:bg-black transition-colors">
                                     Обновить пароль
                                 </button>
+                                <p class="text-xs text-gray-400" style="margin-top: 3px">Эта функция пока недоступна</p>
                             </form>
                         </div>
                     </div>

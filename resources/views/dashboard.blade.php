@@ -100,7 +100,6 @@
                             data-priority="{{ $task->priority_id ?? 'none' }}">
                             <td class="px-6 py-4">
                                 <div class="text-sm font-semibold text-gray-900">{{ $task->title }}</div>
-                                <div class="text-xs text-gray-400 mt-0.5">#{{ $task->id }}</div>
                             </td>
                             <td class="px-6 py-4">
                                 <div class="space-y-1">
@@ -146,6 +145,11 @@
                                     <a href="/tasks/{{$task->id}}" class="p-1.5 text-gray-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-colors" title="Детали">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                                     </a>
+                                    @if($userRole === "teacher" && $task->teacher_id === auth()->user()->id)
+                                        <button onclick="openConfirmationModal({{ $task->id }}, '{{ addslashes($task->title) }}')"  class="p-1.5 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                                            <svg style="width: 16px; height: 16px" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-icon lucide-trash"><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                        </button>
+                                    @endif
 
                                     @if($userRole === 'deputy' && $task->status === 'pending')
                                         <button type="button" onclick="openApproveModal('{{ $task->id }}', '{{ addslashes($task->title) }}')" class="px-2.5 py-1 bg-emerald-500 text-white rounded-md text-xs font-semibold hover:bg-emerald-600 transition-colors">Одобрить</button>
@@ -222,6 +226,42 @@
                         </div>
                     </div>
                 @endforeach
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmationModal" class="fixed inset-0 z-50 hidden overflow-y-auto">
+        <div class="flex items-center justify-center min-h-screen px-4 text-center">
+            <div class="fixed inset-0 bg-gray-900/50" onclick="closeConfirmationModal()"></div>
+            <div class="relative bg-white rounded-xl shadow-xl border border-gray-100 w-full max-w-md mx-auto">
+
+                <div class="px-6 py-4 border-b border-gray-100">
+                    <h3 class="text-sm font-semibold text-gray-900">Удаление заявки</h3>
+                    <p id="deleteTaskTitle" class="text-xs text-gray-400 mt-1"></p>
+                </div>
+
+                <div class="px-6 py-5">
+                    <p class="text-sm text-gray-600">
+                        Вы уверены, что хотите удалить эту заявку? Это действие нельзя отменить.
+                    </p>
+                </div>
+
+                <div class="px-6 py-4 flex justify-end gap-2 border-t border-gray-100">
+                    <button onclick="closeConfirmationModal()"
+                            class="px-4 py-2 text-sm font-medium text-gray-600 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                        Отмена
+                    </button>
+
+                    <form id="deleteForm" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit"
+                                class="px-4 py-2 text-sm font-semibold text-white bg-rose-500 rounded-lg hover:bg-rose-600 transition-colors">
+                            Удалить
+                        </button>
+                    </form>
+                </div>
+
             </div>
         </div>
     </div>
@@ -363,5 +403,23 @@
                 alert('Пожалуйста, выберите и администратора, и приоритет перед одобрением.');
             }
         });
+
+        function openConfirmationModal(taskId, taskTitle) {
+            const modal = document.getElementById('confirmationModal');
+            const form = document.getElementById('deleteForm');
+            const title = document.getElementById('deleteTaskTitle');
+
+            form.action = `/tasks/${taskId}`;
+            title.innerText = `Заявка #${taskId}: ${taskTitle}`;
+
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeConfirmationModal() {
+            const modal = document.getElementById('confirmationModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
     </script>
 @endsection

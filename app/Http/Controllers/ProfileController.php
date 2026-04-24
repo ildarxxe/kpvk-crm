@@ -38,7 +38,7 @@ class ProfileController extends Controller
         }
         return redirect()->back()->withErrors(['password' => "Неверный пароль"]);
     }
-    
+
     public function viewCompleteProfile(): Factory|View
     {
         return view('profile.complete', ['user' => auth()->user()]);
@@ -47,12 +47,13 @@ class ProfileController extends Controller
     public function completeProfile(Request $request): RedirectResponse
     {
         $user = auth()->user();
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|unique:users,phone,' . $user->id,
             'cabinet_number' => 'nullable|integer',
         ]);
+        $validated['cabinet_number'] = $validated['cabinet_number'] ?: null;
 
         $user->update($validated);
 
@@ -62,7 +63,7 @@ class ProfileController extends Controller
     public function updateProfile(Request $request): RedirectResponse
     {
         $user = auth()->user();
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'phone' => 'required|string|unique:users,phone,' . $user->id,

@@ -30,6 +30,7 @@ Route::middleware(['auth', CheckProfileMiddleware::class])->group(function () {
     Route::prefix("tasks")->group(function () {
         Route::get('/', [TaskController::class, 'viewCreate'])->name('tasks.viewCreate');
         Route::post('/', [TaskController::class, 'create'])->name('tasks.create');
+        Route::delete("/{task}", [TaskController::class, 'delete'])->name('tasks.delete');
 
         Route::patch('/{id}/approve', [TaskStatusController::class, 'approve'])->name('tasks.approve');
         Route::patch('/{id}/complete', [TaskStatusController::class, 'complete'])->name('tasks.complete');
