@@ -3,7 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChainCRM</title>
+    @php
+        $brandPrimary = 'ChainCRM';
+        $brandLocal = 'КПВК CRM';
+        $brandDomain = 'crm.kpvk.edu.kz';
+
+        $seoTitle = trim($__env->yieldContent('title', $brandPrimary . ' — ' . $brandLocal));
+        $seoDescription = trim($__env->yieldContent('meta_description', 'ChainCRM — внутренняя CRM-система колледжа КПВК: заявки, уведомления, контроль исполнения и поддержка.'));
+        $seoKeywords = trim($__env->yieldContent('meta_keywords', 'ChainCRM, КПВК CRM, kpvk crm, кпвк срм, crm kpvk, система заявок колледжа, CRM КПВК'));
+        $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
+        $seoOgImage = trim($__env->yieldContent('og_image', url('/favicon.ico')));
+    @endphp
+
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    <meta name="keywords" content="{{ $seoKeywords }}">
+    <link rel="canonical" href="{{ $seoCanonical }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ $brandPrimary }}">
+    <meta property="og:locale" content="ru_RU">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $seoCanonical }}">
+    <meta property="og:image" content="{{ $seoOgImage }}">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    <meta name="twitter:image" content="{{ $seoOgImage }}">
+
+    @yield('schema')
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes slideIn {
@@ -19,7 +49,12 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-14">
             <div class="flex items-center">
-                <a href="/" class="flex items-center">
+                @auth
+                    <a href="{{ route('dashboard') }}" class="flex items-center">
+                @endauth
+                @guest
+                    <a href="{{ route('public.home') }}" class="flex items-center">
+                @endguest
                     <span class="text-base font-bold tracking-tight text-gray-900">Chain<span class="text-indigo-600">CRM</span></span>
                 </a>
             </div>
@@ -27,7 +62,7 @@
             <div class="hidden sm:flex sm:items-center sm:gap-6">
                 @auth
                     @php $unread = auth()->user()->notifications()->whereNull('read_at')->count(); @endphp
-                    <a href="/" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Рабочий стол</a>
+                    <a href="{{ route('dashboard') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Рабочий стол</a>
                     @if(auth()->user()->role->role === 'deputy')
                         <a href="/export" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors">Экспорт</a>
                     @endif
@@ -44,6 +79,11 @@
                         <button type="submit" class="text-sm text-rose-500 hover:text-rose-700 transition-colors">Выход</button>
                     </form>
                 @endauth
+                @guest
+                    <a href="{{ route('public.about') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">О системе</a>
+                    <a href="{{ route('public.help.what_is_chaincrm') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">Что такое ChainCRM</a>
+                    <a href="{{ route('login') }}" class="text-sm text-indigo-600 hover:text-indigo-800 transition-colors">Вход</a>
+                @endguest
             </div>
 
             <div class="flex items-center sm:hidden">
@@ -60,7 +100,7 @@
     <div id="mobile-menu" class="hidden sm:hidden bg-white border-b border-gray-100">
         <div class="px-4 pt-2 pb-5 space-y-0.5">
             @auth
-                <a href="/" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Рабочий стол</a>
+                <a href="{{ route('dashboard') }}" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Рабочий стол</a>
 
                 @if(auth()->user()->role->role === 'deputy')
                     <a href="/export" class="block px-3 py-2.5 rounded-lg text-sm text-indigo-600 hover:bg-indigo-50 transition-colors">Экспорт отчётов</a>
@@ -81,6 +121,12 @@
                     </form>
                 </div>
             @endauth
+
+            @guest
+                <a href="{{ route('public.about') }}" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">О системе</a>
+                <a href="{{ route('public.help.what_is_chaincrm') }}" class="block px-3 py-2.5 rounded-lg text-sm text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors">Что такое ChainCRM</a>
+                <a href="{{ route('login') }}" class="block px-3 py-2.5 rounded-lg text-sm text-indigo-600 hover:bg-indigo-50 transition-colors">Вход</a>
+            @endguest
         </div>
     </div>
 </nav>

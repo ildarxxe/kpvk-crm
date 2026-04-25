@@ -32,7 +32,7 @@ class TaskController extends Controller
         if (auth()->user()->role->role === "deputy") {
             return view('tasks.export');
         }
-        return redirect('/');
+        return redirect()->route('dashboard');
     }
 
     public function generate(Request $request): \Symfony\Component\HttpFoundation\BinaryFileResponse|RedirectResponse

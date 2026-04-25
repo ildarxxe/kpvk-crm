@@ -1,2 +1,12 @@
 User-agent: *
-Disallow:
+Disallow: /dashboard
+Disallow: /admin
+Disallow: /profile
+Disallow: /notifications
+Disallow: /tasks
+Disallow: /export
+Disallow: /support
+
+Allow: /
+
+Sitemap: https://crm.kpvk.edu.kz/sitemap.xml

@@ -24,9 +24,10 @@ Class AuthController extends Controller {
             ? ['email' => $credentials['email'], 'password' => $credentials['password']]
             : ['userprincipalname' => $credentials['email'], 'password' => $credentials['password']];
 
+
         if (Auth::attempt($attemptCredentials)) {
             $request->session()->regenerate();
-            return redirect('/');
+            return redirect()->route('dashboard');
         }
 
         return back()->withErrors(['email' => 'Неверные данные']);
