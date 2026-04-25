@@ -7,31 +7,27 @@
         $brandPrimary = 'ChainCRM';
         $brandLocal = 'КПВК CRM';
         $brandDomain = 'crm.kpvk.edu.kz';
-
-        $seoTitle = trim($__env->yieldContent('title', $brandPrimary . ' — ' . $brandLocal));
-        $seoDescription = trim($__env->yieldContent('meta_description', 'ChainCRM — внутренняя CRM-система колледжа КПВК: заявки, уведомления, контроль исполнения и поддержка.'));
-        $seoKeywords = trim($__env->yieldContent('meta_keywords', 'ChainCRM, КПВК CRM, kpvk crm, кпвк срм, crm kpvk, система заявок колледжа, CRM КПВК'));
-        $seoCanonical = trim($__env->yieldContent('canonical', url()->current()));
-        $seoOgImage = trim($__env->yieldContent('og_image', url('/favicon.ico')));
     @endphp
+    <title>@yield('title', $brandPrimary . ' — ' . $brandLocal)</title>
 
-    <title>{{ $seoTitle }}</title>
-    <meta name="description" content="{{ $seoDescription }}">
-    <meta name="keywords" content="{{ $seoKeywords }}">
-    <link rel="canonical" href="{{ $seoCanonical }}">
+    <meta name="description" content="@yield('meta_description', 'ChainCRM — внутренняя CRM-система колледжа КПВК: заявки, уведомления, контроль исполнения и поддержка.')">
+
+    <meta name="keywords" content="@yield('meta_keywords', 'ChainCRM, КПВК CRM, kpvk crm, кпвк срм, crm kpvk')">
+
+    <link rel="canonical" href="@yield('canonical', url()->current())">
 
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{{ $brandPrimary }}">
+    <meta property="og:site_name" content="chainCRM">
     <meta property="og:locale" content="ru_RU">
-    <meta property="og:title" content="{{ $seoTitle }}">
-    <meta property="og:description" content="{{ $seoDescription }}">
-    <meta property="og:url" content="{{ $seoCanonical }}">
-    <meta property="og:image" content="{{ $seoOgImage }}">
+    <meta property="og:title" content="@yield('title', 'ChainCRM — КПВК CRM')">
+    <meta property="og:description" content="@yield('meta_description', 'ChainCRM — внутренняя CRM-система колледжа КПВК')">
+    <meta property="og:url" content="@yield('canonical', url()->current())">
+    <meta property="og:image" content="@yield('og_image', url('/favicon.ico'))">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="{{ $seoTitle }}">
-    <meta name="twitter:description" content="{{ $seoDescription }}">
-    <meta name="twitter:image" content="{{ $seoOgImage }}">
+    <meta name="twitter:title" content="@yield('title', 'ChainCRM — КПВК CRM')">
+    <meta name="twitter:description" content="@yield('meta_description', 'ChainCRM — внутренняя CRM-система колледжа КПВК')">
+    <meta name="twitter:image" content="@yield('og_image', url('/favicon.ico'))">
 
     @yield('schema')
     <script src="https://cdn.tailwindcss.com"></script>
