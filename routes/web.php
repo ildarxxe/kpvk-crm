@@ -11,6 +11,10 @@ use App\Http\Controllers\TaskStatusController;
 use App\Http\Middleware\CheckProfileMiddleware;
 use Illuminate\Support\Facades\Route;
 
+Route::get("/other/1", function() {
+    return view('other.draft1');
+});
+
 Route::get('/', [PublicPagesController::class, 'home'])->name('public.home');
 Route::get('/about-system', [PublicPagesController::class, 'about'])->name('public.about');
 Route::get('/help/what-is-chaincrm', [PublicPagesController::class, 'helpWhatIs'])->name('public.help.what_is_chaincrm');
